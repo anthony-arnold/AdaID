@@ -47,4 +47,32 @@ package body AdaID is
 		end case;
 	end GetVersion;
 	
+	
+	--Test for equality
+	function "="(Left, Right: in UUID) return Boolean is
+	begin
+		for i in 1 .. uuid_size loop
+			if Left.data(i) /= Right.data(i) then
+				return false;
+			end if;
+		end loop;
+		return true;
+	end "=";
+	
+	
+	--Get the hash value for the UUID
+	function GetHashValue(This: in UUID) return SizeType is
+		seed : SizeType := 0;
+	begin
+		for i in 1 .. uuid_size loop
+			seed := seed or
+					(
+						SizeType(This.data(i)) 
+						+ 16#9E3779B9#
+						+ shift_left(seed, 6)
+						+ shift_right(seed, 2)
+					);
+		end loop;
+		return seed;
+	end GetHashValue;
 end AdaID;

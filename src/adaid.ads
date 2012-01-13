@@ -7,7 +7,7 @@ with Ada.Finalization;
 with Interfaces; use Interfaces; -- for Byte
 package AdaID is
 	-- Size type is unsigned 
-	subtype SizeType is Integer range 0 .. Integer'last;
+	subtype SizeType is Unsigned_32 range 0 .. Unsigned_32'last;
 	uuid_size: constant SizeType := 16;
 	
 	-- Byte Type (2^8)
@@ -41,6 +41,12 @@ package AdaID is
 	
 	--Get the UUID Version
 	function GetVersion(This: in UUID) return VersionType;
+	
+	--Test for equality
+	function "="(Left, Right: in UUID) return Boolean;
+	
+	--Get the hash value for the UUID
+	function GetHashValue(This: in UUID) return SizeType;
 	
 private
 	--Default "constructor", initializes to NIL
