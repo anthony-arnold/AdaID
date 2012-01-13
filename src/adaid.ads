@@ -25,6 +25,13 @@ package AdaID is
 		Random_Number_Based,
 		Name_Based_SHA1
 	);
+	
+	type VariantType is (
+		NCS,
+		RFC_4122,
+		Microsoft,
+		Future
+	);
 
 	-- The main type for the package
 	type UUID is new Ada.Finalization.Controlled with 
@@ -41,6 +48,9 @@ package AdaID is
 	
 	--Get the UUID Version
 	function GetVersion(This: in UUID) return VersionType;
+	
+	--Get the UUID Variant
+	function GetVariant(This: in UUID) return VariantType;
 	
 	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean;

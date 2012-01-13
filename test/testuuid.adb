@@ -28,6 +28,13 @@ begin
 	
 	
 	
+	Ada.Text_IO.Put("Testing GetVariant: ");
+	if AdaID.GetVariant(id) /= NCS then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
+	
 	Ada.Text_IO.Put("Testing =: ");
 	if id /= id2 then
 		Ada.Text_IO.Put_Line("Failed");

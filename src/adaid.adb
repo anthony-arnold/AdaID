@@ -47,6 +47,21 @@ package body AdaID is
 		end case;
 	end GetVersion;
 	
+	--Get the UUID Variant
+	function GetVariant(This: in UUID) return VariantType is
+		-- variant type in octet 7
+		b : constant Byte := This.data(8);
+	begin
+		if (b and 16#80#) = 0 then
+			return NCS;
+		elsif (b and 16#C0#) = 16#80# then
+			return RFC_4122;
+		elsif (b and 16#E0#) = 16#C0# then
+			return Microsoft;
+		else
+			return Future;
+		end if;
+	end GetVariant;
 	
 	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean is
