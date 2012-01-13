@@ -6,11 +6,21 @@
 with AdaID;
 with Ada.Text_IO; 
 
+use AdaID;
+
 procedure testuuid is
 	id: AdaID.UUID;
 begin
-	Ada.Text_IO.Put_Line("Testing IsNil");
+	Ada.Text_IO.Put("Testing IsNil: ");
 	if not AdaID.IsNil(id) then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
+	
+	
+	Ada.Text_IO.Put("Testing GetVersion: ");
+	if AdaID.GetVersion(id) /= Unknown then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
