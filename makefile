@@ -49,5 +49,5 @@ test: $(TESTUUID)
 clean:
 	rm $(BIN)/*.ali $(BIN)/*.o
 cleanall: clean
-	rm $(TESTUUID)
+	rm $(TESTUUID) $(LIB)
 
