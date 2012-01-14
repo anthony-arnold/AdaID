@@ -7,6 +7,7 @@ with AdaID;
 with Ada.Text_IO; 
 
 use AdaID;
+
 with Interfaces; use Interfaces;
 procedure testuuid is
 	id, id2: AdaID.UUID;
@@ -52,6 +53,27 @@ begin
 		Ada.Text_IO.Put_Line("Passed");
 	end if;
 	
+	
+	Ada.Text_IO.Put("Testing Random: ");
+	id := Random;
+	id2 := Random;
+	if id = id2 then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
+	
+	
+	Ada.Text_IO.Put("Testing FromName: ");
+	id := FromName("Hello, World!");
+	id2 := FromName("Hello, Joe!");
+	if id = id2 then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
+	
 	Ada.Text_IO.Put_Line("Testing Complete");
+	
 end;
 

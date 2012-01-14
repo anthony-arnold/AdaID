@@ -4,17 +4,20 @@
 -- License: http://www.gnu.org/licenses/gpl.txt
 
 with Ada.Finalization;
-with Interfaces; use Interfaces; -- for Byte
+with Interfaces; use Interfaces; -- for Unsigned_n
 package AdaID is
 	-- Size type is unsigned 
 	subtype SizeType is Unsigned_32 range 0 .. Unsigned_32'last;
-	uuid_size: constant SizeType := 16;
+	uuid_size: constant Integer := 16;
+	
+	--Hash Type
+	subtype HashType is SizeType;
 	
 	-- Byte Type (2^8)
 	subtype Byte is Unsigned_8;
 
 	-- Byte Array
-	type ByteArray is array (1 .. uuid_size) of Byte;
+	type ByteArray is array (0 .. 15) of Byte;
 	
 	-- Some UUID Enums
 	type VersionType is (
@@ -39,10 +42,6 @@ package AdaID is
 		data: ByteArray;
 	end record;
 	
-	
-	--Generate a random UUID
-	function Random return UUID;
-	
 	--Determine if UUID is NIL
 	function IsNil(This: in UUID) return Boolean;
 	
@@ -57,6 +56,15 @@ package AdaID is
 	
 	--Get the hash value for the UUID
 	function GetHashValue(This: in UUID) return SizeType;
+	
+	
+	-------------------- GENERATORS -----------------------
+	
+	--Generate a random UUID
+	function Random return UUID;
+	
+	--Generate a UUID based on a name
+	function FromName(name : in String) return UUID;
 	
 private
 	--Default "constructor", initializes to NIL
