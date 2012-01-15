@@ -14,7 +14,7 @@ procedure testuuid is
 begin
 	Ada.Text_IO.Put("Testing IsNil: ");
 	Nil(id);
-	if not IsNil(id) or not IsNil(id2) then
+	if not Is_Nil(id) or not Is_Nil(id2) then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -22,7 +22,7 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing GetVersion: ");
-	if AdaID.GetVersion(id) /= Unknown then
+	if AdaID.Get_Version(id) /= Unknown then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -31,7 +31,7 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing GetVariant: ");
-	if AdaID.GetVariant(id) /= NCS then
+	if AdaID.Get_Variant(id) /= NCS then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -48,7 +48,7 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing GetHashValue: ");
-	if GetHashValue(id) /= GetHashValue(id2) then
+	if Get_Has_Value(id) /= Get_Hash_Value(id2) then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -67,8 +67,8 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing FromName: ");
-	FromName(id3, "Hello, World!", id);
-	FromName(id3, "Hello, Joe!", id2);
+	From_Name(id3, "Hello, World!", id);
+	From_Name(id3, "Hello, Joe!", id2);
 	if id = id2 then
 		Ada.Text_IO.Put_Line("Failed");
 	else
@@ -78,7 +78,7 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing ToString: ");
-	FromName(id3, "UUID", id);
+	From_Name(id3, "UUID", id);
 	Ada.Text_IO.Put_Line(To_String(id));
 	--if  /= "6ba7b810-9dad-11d1-80b4-00c04fd430c8" then
 	--	Ada.Text_IO.Put_Line("Failed");

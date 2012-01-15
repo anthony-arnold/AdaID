@@ -21,7 +21,7 @@ package body AdaID is
 	end;
 	
 	-- Determine if the UUID is NIL
-	function IsNil(This: in UUID) return Boolean is
+	function Is_Nil(This: in UUID) return Boolean is
 	begin
 		for i in ByteArray'Range loop
 			if This.data(i) /= 0 then
@@ -29,10 +29,10 @@ package body AdaID is
 			end if;
 		end loop;
 		return true;
-	end IsNil; 
+	end Is_Nil; 
 	
 	--Get the UUID Version
-	function GetVersion(This: in UUID) return VersionType is
+	function Get_Version(This: in UUID) return VersionType is
 		-- version type in octect 9
 		b : constant Byte := This.data(6) and Byte(16#0F#);
 	begin
@@ -44,10 +44,10 @@ package body AdaID is
 			when 16#50# => return Name_Based_SHA1;
 			when others => return Unknown;
 		end case;
-	end GetVersion;
+	end Get_Version;
 	
 	--Get the UUID Variant
-	function GetVariant(This: in UUID) return VariantType is
+	function Get_Variant(This: in UUID) return VariantType is
 		-- variant type in octet 7
 		b : constant Byte := This.data(8);
 	begin
@@ -60,7 +60,7 @@ package body AdaID is
 		else
 			return Future;
 		end if;
-	end GetVariant;
+	end Get_Variant;
 	
 	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean is
@@ -75,7 +75,7 @@ package body AdaID is
 	
 	
 	--Get the hash value for the UUID
-	function GetHashValue(This: in UUID) return SizeType is
+	function Get_Hash_Value(This: in UUID) return SizeType is
 		seed : SizeType := 0;
 	begin
 		for i in ByteArray'Range loop
@@ -88,7 +88,7 @@ package body AdaID is
 					);
 		end loop;
 		return seed;
-	end GetHashValue;
+	end Get_Hash_Value;
 	
 	--Convert the UUID to a string
 	function To_String(This: in UUID) return String is
@@ -173,7 +173,7 @@ package body AdaID is
 	
 	
 	--Generate a UUID based on a name
-	procedure FromName(namespace: in UUID; name: in String; id: in out UUID) is
+	procedure From_Name(namespace: in UUID; name: in String; id: in out UUID) is
 		c : Context;
 		d : SHA.Digest;
 	begin
@@ -205,6 +205,8 @@ package body AdaID is
 		
 		--set version
 		id.data(6) := (id.data(6) and 16#5F#) or 16#50#;
-	end;
+	end From_Name;
+	
+	
 	
 end AdaID;

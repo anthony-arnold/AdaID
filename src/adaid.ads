@@ -44,19 +44,19 @@ package AdaID is
 	end record;
 	
 	--Determine if UUID is NIL
-	function IsNil(This: in UUID) return Boolean;
+	function Is_Nil(This: in UUID) return Boolean;
 	
 	--Get the UUID Version
-	function GetVersion(This: in UUID) return VersionType;
+	function Get_Version(This: in UUID) return VersionType;
 	
 	--Get the UUID Variant
-	function GetVariant(This: in UUID) return VariantType;
+	function Get_Variant(This: in UUID) return VariantType;
 	
 	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean;
 	
 	--Get the hash value for the UUID
-	function GetHashValue(This: in UUID) return SizeType;
+	function Get_Hash_Value(This: in UUID) return SizeType;
 	
 	--Convert the UUID to a string
 	function To_String(This: in UUID) return String;
@@ -66,11 +66,16 @@ package AdaID is
 	-- Set a UUID to Nil
 	procedure Nil(id : in out UUID);
 	
-	--Generate a random UUID
+	-- Generate a random UUID
 	procedure Random(id : in out UUID);
 	
-	--Generate a UUID based on a name
-	procedure FromName(namespace: in UUID; name: in String; id: in out UUID);
+	-- Generate a UUID based on a name
+	procedure From_Name(namespace: in UUID; name: in String; id: in out UUID);
+	
+	-- Generate a UUID from a string.
+	-- This is not so much generation, but reconstruction
+	--procedure From_String(str : in String; id : in out UUID);
+	--procedure From_Wide_String(str : in Wide_String; id : in out UUID);
 	
 private
 	--Default "constructor", initializes to NIL
