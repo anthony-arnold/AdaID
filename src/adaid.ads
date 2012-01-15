@@ -6,18 +6,19 @@
 with Ada.Finalization;
 with Interfaces; use Interfaces; -- for Unsigned_n
 package AdaID is
+
 	-- Size type is unsigned 
-	subtype SizeType is Unsigned_32 range 0 .. Unsigned_32'last;
-	uuid_size: constant Integer := 16;
+	subtype SizeType is Unsigned_32;
+	uuid_size: constant Integer := 16; -- This many bytes in a UUID
 	
 	--Hash Type
-	subtype HashType is SizeType;
+	subtype HashType is SizeType; -- The 'hash' of a UUID
 	
 	-- Byte Type (2^8)
-	subtype Byte is Unsigned_8;
+	type Byte is mod 2 ** 8; -- 8-bit bytes
 
-	-- Byte Array
-	type ByteArray is array (0 .. 15) of Byte;
+	-- Byte Array for UUID data storage
+	type ByteArray is array (0 .. uuid_size-1) of Byte; 
 	
 	-- Some UUID Enums
 	type VersionType is (
@@ -57,14 +58,19 @@ package AdaID is
 	--Get the hash value for the UUID
 	function GetHashValue(This: in UUID) return SizeType;
 	
+	--Convert the UUID to a string
+	function To_String(This: in UUID) return String;
+	function To_Wide_String(This: in UUID) return Wide_String;
 	
 	-------------------- GENERATORS -----------------------
+	-- Set a UUID to Nil
+	procedure Nil(id : in out UUID);
 	
 	--Generate a random UUID
-	function Random return UUID;
+	procedure Random(id : in out UUID);
 	
 	--Generate a UUID based on a name
-	function FromName(name : in String) return UUID;
+	procedure FromName(namespace: in UUID; name: in String; id: in out UUID);
 	
 private
 	--Default "constructor", initializes to NIL

@@ -15,7 +15,7 @@ package body AdaID is
 	-- Default "Constructor" for NIL UUID
 	overriding procedure Initialize(This: in out UUID) is
 	begin
-		for i in 0 .. uuid_size-1 loop
+		for i in ByteArray'Range loop
 			This.data(i) := 0;
 		end loop;
 	end;
@@ -23,7 +23,7 @@ package body AdaID is
 	-- Determine if the UUID is NIL
 	function IsNil(This: in UUID) return Boolean is
 	begin
-		for i in 0 .. uuid_size-1 loop
+		for i in ByteArray'Range loop
 			if This.data(i) /= 0 then
 				return false;
 			end if;
@@ -65,7 +65,7 @@ package body AdaID is
 	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean is
 	begin
-		for i in 0 .. uuid_size-1 loop
+		for i in ByteArray'Range loop
 			if Left.data(i) /= Right.data(i) then
 				return false;
 			end if;
@@ -78,7 +78,7 @@ package body AdaID is
 	function GetHashValue(This: in UUID) return SizeType is
 		seed : SizeType := 0;
 	begin
-		for i in 0 .. uuid_size-1 loop
+		for i in ByteArray'Range loop
 			seed := seed xor
 					(
 						SizeType(This.data(i)) 
@@ -90,11 +90,61 @@ package body AdaID is
 		return seed;
 	end GetHashValue;
 	
+	--Convert the UUID to a string
+	function To_String(This: in UUID) return String is
+		result : String(1 .. 36);
+		index : Integer := 1;
+		base : constant Integer := 2 ** 4;
+		chars : constant String(1 .. base) := "0123456789ABCDEF";
+		b : Integer;
+	begin
+		for i in ByteArray'Range loop
+			b := Integer(This.data(i));
+			result(index) := chars(b / base + 1);
+			result(index + 1) := chars(b mod base + 1);
+			index := index + 2;
+			
+			if i = 3 or i = 5 or i = 7 or i = 9 then
+				result(index) := '-';
+				index := index + 1;
+			end if;
+		end loop;
+		return result;
+	end To_String;
+	
+	
+	function To_Wide_String(This: in UUID) return Wide_String is
+		result : Wide_String(1 .. 36);
+		index : Integer := 1;
+		base : constant := 16;
+		chars : constant Wide_String(1 .. base) := "0123456789ABCDEF";
+		b : Integer;
+	begin
+		
+		for i in ByteArray'Range loop
+			b := Integer(This.data(i));
+			result(index) := chars(b / base + 1);
+			result(index + 1) := chars(b mod base + 1);
+			index := index + 2;
+			
+			if i = 3 or i = 5 or i = 7 or i = 9 then
+				result(index) := '-';
+				index := index + 1;
+			end if;
+		end loop;
+		return result;
+	end To_Wide_String;
+	
 	--=============== GENERATORS ===============--
 	
+	--Reset a UUID to Nil
+	procedure Nil(id : in out UUID) is
+	begin
+		Initialize(id);
+	end Nil;
+	
 	-- Generate a randome UUID
-	function Random return UUID is
-		id : UUID;
+	procedure Random(id : in out UUID) is
 		rand : Unsigned_64;
 		x : Integer := 0;
 	begin
@@ -106,7 +156,7 @@ package body AdaID is
 		
 		rand := RNG.Random(generator);
 		
-		for i in 0 .. uuid_size-1 loop
+		for i in ByteArray'Range loop
 			if x = Unsigned_64'Size then
 				x := 0;
 				rand := RNG.Random(generator);
@@ -119,22 +169,35 @@ package body AdaID is
 		
 		--Set the version to random-number-based
 		id.data(6) := (id.data(6) and 16#4F#) or 16#40#;
-		
-		return id;
 	end;
 	
 	
 	--Generate a UUID based on a name
-	function FromName(name : in String) return UUID is
-		id : UUID;
-		d : constant SHA.Digest := Digest_A_String(name);
+	procedure FromName(namespace: in UUID; name: in String; id: in out UUID) is
+		c : Context;
+		d : SHA.Digest;
 	begin
+		Initialize(c);
+		
+		-- Start SHA1 hashing with namespace uuid
+		for i in namespace.data'Range loop
+			Add(SHA.Process_Data.Byte(namespace.data(i)), c);
+		end loop;
+		
+		-- Continuing hashing the actual name
+		for i in name'Range loop
+			Add(SHA.Process_Data.Byte(Character'Pos(name(i))), c);
+		end loop;
+		
+		--Get the digest
+		Finalize(d, c);
+	
+		-- Now make the UUID from the hash
 		for i in 0 .. 3 loop
-			
-			id.data(i*4+0) := Unsigned_8(shift_right(d(i), 24) and 16#FF#);
-			id.data(i*4+1) := Unsigned_8(shift_right(d(i), 16) and 16#FF#);
-			id.data(i*4+2) := Unsigned_8(shift_right(d(i),  8) and 16#FF#);
-			id.data(i*4+3) := Unsigned_8(shift_right(d(i),  0) and 16#FF#);
+			id.data(i*4+0) := Byte(shift_right(d(i), 24) and 16#FF#);
+			id.data(i*4+1) := Byte(shift_right(d(i), 16) and 16#FF#);
+			id.data(i*4+2) := Byte(shift_right(d(i),  8) and 16#FF#);
+			id.data(i*4+3) := Byte(shift_right(d(i),  0) and 16#FF#);
 		end loop;
 		
 		-- set variant
@@ -142,8 +205,6 @@ package body AdaID is
 		
 		--set version
 		id.data(6) := (id.data(6) and 16#5F#) or 16#50#;
-		
-		return id;
 	end;
 	
 end AdaID;

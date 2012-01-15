@@ -10,10 +10,11 @@ use AdaID;
 
 with Interfaces; use Interfaces;
 procedure testuuid is
-	id, id2: AdaID.UUID;
+	id, id2, id3: AdaID.UUID;
 begin
 	Ada.Text_IO.Put("Testing IsNil: ");
-	if not AdaID.IsNil(id) then
+	Nil(id);
+	if not IsNil(id) or not IsNil(id2) then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -55,9 +56,10 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing Random: ");
-	id := Random;
-	id2 := Random;
-	if id = id2 then
+	Random(id);
+	Random(id2);
+	Random(id3);
+	if id = id2 or id2 = id3 or id = id3 then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -65,13 +67,24 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing FromName: ");
-	id := FromName("Hello, World!");
-	id2 := FromName("Hello, Joe!");
+	FromName(id3, "Hello, World!", id);
+	FromName(id3, "Hello, Joe!", id2);
 	if id = id2 then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
 	end if;
+	
+	
+	
+	Ada.Text_IO.Put("Testing ToString: ");
+	FromName(id3, "UUID", id);
+	Ada.Text_IO.Put_Line(To_String(id));
+	--if  /= "6ba7b810-9dad-11d1-80b4-00c04fd430c8" then
+	--	Ada.Text_IO.Put_Line("Failed");
+	--else
+	--	Ada.Text_IO.Put_Line("Passed");
+	--end if;
 	
 	Ada.Text_IO.Put_Line("Testing Complete");
 	

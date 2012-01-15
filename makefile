@@ -3,7 +3,7 @@ SRC=./src
 BIN=./bin
 CC=gcc
 AR=ar
-FLAGS=-Wall -gnat12
+FLAGS=-Wall -gnat12 -g
 LIB=./lib/libadaid.a
 OBJS=$(BIN)/adaid.o $(BIN)/sha.o $(BIN)/sha-process_data.o
 BIND=gnatbind
@@ -47,7 +47,7 @@ test: $(TESTUUID)
 .PHONY: clean
 .PHONY: cleanall
 clean:
-	rm $(BIN)/*.ali $(BIN)/*.o
+	rm $(BIN)/*.ali $(BIN)/*.o 2> /dev/null
 cleanall: clean
-	rm $(TESTUUID) $(LIB)
+	rm $(TESTUUID) $(LIB) 2> /dev/null
 
