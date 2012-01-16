@@ -3,8 +3,8 @@
 -- Author: Anthony Arnold
 -- License: http://www.gnu.org/licenses/gpl.txt
 
+with SHA.Process_Data; 
 with Ada.Numerics.Discrete_Random;
-with SHA.Process_Data; use SHA.Process_Data;
 package body AdaID is
 
 	-- For RNG
@@ -112,29 +112,6 @@ package body AdaID is
 		return result;
 	end To_String;
 	
-	
-	function To_Wide_String(This: in UUID) return Wide_String is
-		result : Wide_String(1 .. 36);
-		index : Integer := 1;
-		base : constant := 16;
-		chars : constant Wide_String(1 .. base) := "0123456789ABCDEF";
-		b : Integer;
-	begin
-		
-		for i in ByteArray'Range loop
-			b := Integer(This.data(i));
-			result(index) := chars(b / base + 1);
-			result(index + 1) := chars(b mod base + 1);
-			index := index + 2;
-			
-			if i = 3 or i = 5 or i = 7 or i = 9 then
-				result(index) := '-';
-				index := index + 1;
-			end if;
-		end loop;
-		return result;
-	end To_Wide_String;
-	
 	--=============== GENERATORS ===============--
 	
 	--Reset a UUID to Nil
@@ -174,6 +151,8 @@ package body AdaID is
 	
 	--Generate a UUID based on a name
 	procedure From_Name(namespace: in UUID; name: in String; id: in out UUID) is
+		use SHA.Process_Data;
+		
 		c : Context;
 		d : SHA.Digest;
 	begin
@@ -208,5 +187,52 @@ package body AdaID is
 	end From_Name;
 	
 	
+	-- Generate a UUID from a string.
+	-- This is not so much generation, but reconstruction
+	procedure From_String(str : in String; id : in out UUID) is
+		delim: constant Character := '-';
+		open : constant Character := '{';
+		close : constant Character := '}';
+		
+		-- expect dashes if str is 36 or 38 in length
+		dashed: constant Boolean := str'Length = 36 or str'Length = 38;
+		braced: constant Boolean := str(str'First) = open and 
+									str(str'Last) = close;
+		
+		idx : Integer := 0;
+		start, rel : Integer;
+		
+	begin
+		
+		-- Check that length is valid
+		if not dashed and str'Length /= 32 and str'Length /= 34 then
+			raise Invalid_String;
+		end if;
+		
+		-- Check that brace are valid
+		start := str'First;
+		if not braced and
+			(str(str'First) = open or str(str'Last) = close) then
+			raise Invalid_String; -- only one brace present
+		elsif braced then
+			start := str'First + 1;
+		end if;
+		
+		idx := start;
+		
+		-- Grab each pair and stuff into byte
+		for i in ByteArray'Range loop
+			rel := idx - start;
+			if dashed and (rel = 8 or rel = 13 or rel = 18 or rel = 23) then
+				if str(idx) /= delim then
+					raise Invalid_String; -- expected '-'
+				end if;
+				idx := idx + 1;
+			end if;
+			-- Convert to byte
+			id.data(i) := Byte'Value("16#" & str(idx .. idx+1) & "#");
+			idx := idx + 2;
+		end loop;
+	end From_String;
 	
 end AdaID;

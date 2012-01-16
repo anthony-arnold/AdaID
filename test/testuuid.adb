@@ -48,7 +48,7 @@ begin
 	
 	
 	Ada.Text_IO.Put("Testing GetHashValue: ");
-	if Get_Has_Value(id) /= Get_Hash_Value(id2) then
+	if Get_Hash_Value(id) /= Get_Hash_Value(id2) then
 		Ada.Text_IO.Put_Line("Failed");
 	else
 		Ada.Text_IO.Put_Line("Passed");
@@ -77,16 +77,24 @@ begin
 	
 	
 	
-	Ada.Text_IO.Put("Testing ToString: ");
-	From_Name(id3, "UUID", id);
-	Ada.Text_IO.Put_Line(To_String(id));
-	--if  /= "6ba7b810-9dad-11d1-80b4-00c04fd430c8" then
-	--	Ada.Text_IO.Put_Line("Failed");
-	--else
-	--	Ada.Text_IO.Put_Line("Passed");
-	--end if;
+	Ada.Text_IO.Put("Testing To_String: ");
+	if To_String(id)'Length /= 36 then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
 	
+	
+	
+	
+	Ada.Text_IO.Put("Testing From_String: ");
+	From_String("{"&To_String(id)&"}", id2);
+	if id /= id2 then
+		Ada.Text_IO.Put_Line("Failed");
+	else
+		Ada.Text_IO.Put_Line("Passed");
+	end if;
+		
 	Ada.Text_IO.Put_Line("Testing Complete");
-	
 end;
 

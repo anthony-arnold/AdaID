@@ -2,10 +2,10 @@
 
 **AdaID** is a simple Ada library for generating [UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier). Supported operations include:
 
-	- Generating random UUIDs
-	- Generating name-based UUIDs
-	- Restoring UUIDs from a string representation (Not yet implemented).
-	- Converting a UUID to a string
+ - Generating random UUIDs
+ - Generating name-based UUIDs
+ - Restoring UUIDs from a string representation (Not yet implemented).
+ - Converting a UUID to a string
 
 Included is [Jonh Halleck's NIST-validated implementation of SHA1](http://home.utah.edu/~nahaj/ada/sha/) (distrubted under the GNU GPLv3).
 
@@ -24,7 +24,7 @@ Here's an example usage:
 
 Future improvements include:
 
-	- Moving the test program to a proper unit test framework
-	- Including an install option in the build process
-	- General make file improvements
+ - Moving the test program to a proper unit test framework
+ - Including an install option in the build process
+ - General make file improvements
 
