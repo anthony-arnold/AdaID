@@ -3,10 +3,10 @@
 -- Author: Anthony Arnold
 -- License: http://www.gnu.org/licenses/gpl.txt
 
-with AdaID;
+with AdaID; use AdaID;
+with AdaID.Generate; use AdaID.Generate;
 with Ada.Text_IO; 
 
-use AdaID;
 
 with Interfaces; use Interfaces;
 procedure testuuid is

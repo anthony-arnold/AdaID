@@ -37,8 +37,6 @@ package AdaID is
 		Future
 	);
 	
-	-- Exception for string parsing
-	Invalid_String : exception;
 
 	-- The main type for the package
 	type UUID is new Ada.Finalization.Controlled with 
@@ -63,20 +61,6 @@ package AdaID is
 	
 	--Convert the UUID to a string
 	function To_String(This: in UUID) return String;
-	
-	-------------------- GENERATORS -----------------------
-	-- Set a UUID to Nil
-	procedure Nil(id : in out UUID);
-	
-	-- Generate a random UUID
-	procedure Random(id : in out UUID);
-	
-	-- Generate a UUID based on a name
-	procedure From_Name(namespace: in UUID; name: in String; id: in out UUID);
-	
-	-- Generate a UUID from a string.
-	-- This is not so much generation, but reconstruction
-	procedure From_String(str : in String; id : in out UUID);
 	
 private
 	--Default "constructor", initializes to NIL

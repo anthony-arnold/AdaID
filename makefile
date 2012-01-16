@@ -5,7 +5,7 @@ CC=gcc
 AR=ar
 FLAGS=-Wall -gnat12 -g
 LIB=./lib/libadaid.a
-OBJS=$(BIN)/adaid.o $(BIN)/sha.o $(BIN)/sha-process_data.o
+OBJS=$(BIN)/adaid.o $(BIN)/sha.o $(BIN)/sha-process_data.o $(BIN)/adaid-generate.o
 BIND=gnatbind
 LNK=gnatlink
 TEST=./test/testuuid.adb
@@ -24,6 +24,9 @@ $(LIB): $(OBJS)
 #build object files
 $(BIN)/adaid.o: $(SRC)/adaid.adb $(SRC)/adaid.ads
 	$(CC) -c $(FLAGS) -I$(SRC) -I- $(SRC)/adaid.adb -o $(BIN)/adaid.o
+	
+$(BIN)/adaid-generate.o: $(SRC)/adaid-generate.adb $(SRC)/adaid-generate.ads
+	$(CC) -c $(FLAGS) -I$(SRC) -I- $(SRC)/adaid-generate.adb -o $(BIN)/adaid-generate.o
 	
 $(BIN)/sha.o: $(SRC)/sha.ads
 	$(CC) -c $(FLAGS) -I$(SRC) -I- $(SRC)/sha.ads -o $(BIN)/sha.o
