@@ -7,10 +7,19 @@ library project AdaID_Debug is
 	for Library_ALI_Dir use "ali/debug";
 	
 	package Builder is
-		for Default_Switches("Ada") use ("-g", "-gnat12", "-gnatQ");
+		for Default_Switches("Ada") use ("-g",
+										"-Wall",
+										"-Wextra", 
+										"-gnat12", 
+										"-gnatQ");
 	end Builder;
 	package Compiler is
-		for Default_Switches("Ada") use ("-g", "-gnat12", "-I./include");
+		for Default_Switches("Ada") use ("-g",
+										"-Wall",
+										"--pedantic-errors",
+										"-Wextra", 
+										"-gnat12", 
+										"-I./include");
 	end Compiler;
 	
 end AdaID_Debug;

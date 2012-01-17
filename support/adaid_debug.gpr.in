@@ -1,0 +1,11 @@
+project AdaID_Debug is
+
+	for Library_Dir use "../../../lib";
+	for Library_ALI_Dir use "../../../lib/ada/adalib/adaid/debug";
+	for Library_Name use "adaid_debug";
+	for Library_Kind use "static";
+	for Externally_Built use "true";
+
+	for Source_Dirs use ("./adaid");
+
+end AdaID_Debug;

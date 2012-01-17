@@ -37,7 +37,7 @@ package body AdaID.Generate is
 		rand := RNG.Random(generator);
 		
 		for i in ByteArray'Range loop
-			if x = Unsigned_32'Size then
+			if x = 4 then
 				x := 0;
 				rand := RNG.Random(generator);
 			end if;

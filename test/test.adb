@@ -10,7 +10,7 @@ with AdaID_Tests;
 
 procedure Test is
 	function Suite return Access_Test_Suite is
-		Result : Access_Test_Suite := new Test_Suite;
+		Result : constant Access_Test_Suite := new Test_Suite;
 	begin
 		Add_Test(Result, new AdaID_Tests.UUID_Test);
 		return Result;

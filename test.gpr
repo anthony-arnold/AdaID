@@ -8,7 +8,12 @@ project Test is
 	for Exec_Dir use "bin";
 	
 	package Builder is
-		for Default_Switches("Ada") use ("-g", "-gnat12", "-gnatQ", "-I./include");
+		for Default_Switches("Ada") use ("-g",
+										"-Wall",
+										"-Wextra",  
+										"-gnat12", 
+										"-gnatQ", 
+										"-I./include");
 	end Builder;
 	
 	
@@ -17,7 +22,15 @@ project Test is
 	end Linker;
 	
 	package Compiler is
-		for Default_Switches("Ada") use ("-Llib", "-ladaid_debug", "-gnatf", "-g", "-I./include");
+		for Default_Switches("Ada") use ("-Llib", 
+										"-ladaid_debug", 
+										"-gnatf", 
+										"-gnatwaeF",
+										"-g",
+										"-Wall",
+										"--pedantic-errors",
+										"-Wextra", 
+										"-I./include");
 	end Compiler;
 	
 	package Binder is

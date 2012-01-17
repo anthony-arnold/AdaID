@@ -1,0 +1,8 @@
+project AdaID is
+	for Library_Dir use "%LIB_DIR%";
+	for Library_ALI_Dir use "%ALI_DIR%";
+	for Library_Name use "adaid";
+	for Library_Kind use "dynamic";
+	for Externally_Built use "true";
+	for Source_Dirs use ("%SRC_DIR%");
+end AdaID;
