@@ -1,10 +1,18 @@
 LIB=./lib/libadaid.so
+DEBUG=./lib/libadaid.a
 TEST=./bin/test
 
 #library
 $(LIB): src/*.adb src/*.ads include/*.ads
 	gnatmake -Padaid.gpr
-	
+
+#debugging
+.PHONY: debug
+
+debug: $(DEBUG)
+
+$(DEBUG): src/*.adb src/*.ads include/*.ads
+	gnatmake -Padaid_debug.gpr
 
 #test executable
 $(TEST): $(LIB) include/*.ads test/*.adb test/*.ads
@@ -12,7 +20,6 @@ $(TEST): $(LIB) include/*.ads test/*.adb test/*.ads
 
 #run tests
 test: $(TEST)
-	@export LD_LIBRARY_PATH=./lib;\
 	$(TEST)
 
 #misc
@@ -23,7 +30,7 @@ all: $(LIB) $(TEST)
 .PHONY: clean
 .PHONY: cleanall
 clean:
-	rm -f obj/* 2> /dev/null
+	rm -f obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
 cleanall: clean
 	rm -f bin/* lib/* 2> /dev/null
 

@@ -1,8 +1,8 @@
 with "aunit.gpr";
-with "adaid.gpr";
+with "adaid_debug.gpr";
 project Test is
 	for Languages use ("Ada");
-	for Object_Dir use "obj";
+	for Object_Dir use "obj/test";
 	for Source_Dirs use ("test");
 	for Main use ("test.adb");
 	for Exec_Dir use "bin";
@@ -17,7 +17,7 @@ project Test is
 	end Linker;
 	
 	package Compiler is
-		for Default_Switches("Ada") use ("-Llib", "-ladaid", "-gnatf", "-g", "-I./include");
+		for Default_Switches("Ada") use ("-Llib", "-ladaid_debug", "-gnatf", "-g", "-I./include");
 	end Compiler;
 	
 	package Binder is
