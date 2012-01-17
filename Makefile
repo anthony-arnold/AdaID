@@ -1,6 +1,9 @@
+VERSION=1.0
 LIB=./lib/libadaid.so
 DEBUG=./lib/libadaid.a
 TEST=./bin/test
+DIST=adaid_$(VERSION).orig.tgz
+DIST_NAME=adaid-$(VERSION)
 GNAT=gnat
 RM=rm
 CHMOD=chmod
@@ -8,12 +11,14 @@ MKDIR=mkdir -p
 CP=cp
 
 
-.PHONY: debug test install installclean clean cleanall all support remove
+.PHONY: debug test install installclean clean cleanall all support remove dist
 
 #library
-$(LIB): src/*.adb src/*.ads include/*.ads
+$(LIB): src/*.adb src/*.ads include/*.ads adaid.gpr
 	$(GNAT) make -Padaid.gpr
 
+adaid.gpr: adaid.gpr.in
+	@cat $< | sed 's/%VERSION%/$(VERSION)/' > $@
 
 #installation
 INSTALL = $(shell which $(GNAT) 2> /dev/null | sed -e 's/\/bin\/gnat.*//')
@@ -26,6 +31,8 @@ support/adaid.gpr: support/adaid.gpr.in
 	@cat $< | sed  -e 's!%LIB_DIR%!$(LIBRARY)!' \
 									-e 's!%SRC_DIR%!$(INCLUDE)!' \
 									-e 's!%ALI_DIR%!$(ALI)!' > $@
+
+
 
 installclean:
 ifeq ($(INSTALL),)
@@ -75,6 +82,17 @@ $(TEST): $(LIB) include/*.ads test/*.adb test/*.ads
 test: $(TEST)
 	$(TEST)
 
+#make a tarball of the source
+dist: $(DIST)
+
+THIS=$(shell basename `pwd`)
+$(DIST): cleanall
+	cd ..;\
+	tar caf $@ \
+				--exclude-vcs --exclude=*~ --exclude=.gitignore --exclude=*.tgz\
+				--xform 's!$(THIS)!$(DIST_NAME)!'\
+				$(THIS)
+
 #misc
 all: $(LIB) $(TEST)
 
@@ -82,5 +100,5 @@ clean:
 	$(RM) -f obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
 	
 cleanall: clean
-	$(RM) -f support/*.gpr bin/* lib/*  2> /dev/null
+	$(RM) -f support/*.gpr bin/* lib/* adaid.gpr  2> /dev/null
 

@@ -1,5 +1,5 @@
 library project AdaID is
-	Version := "0.0.0";
+	Version := "%VERSION%";
 	for Library_Name use "adaid";
 	for Object_Dir use "obj";
 	for Source_Dirs use ("src");
