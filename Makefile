@@ -79,8 +79,8 @@ test: $(TEST)
 all: $(LIB) $(TEST)
 
 clean:
-	$(RM) -f support/*.gpr obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
+	$(RM) -f obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
 	
 cleanall: clean
-	$(RM) -f bin/* lib/* 2> /dev/null
+	$(RM) -f support/*.gpr bin/* lib/*  2> /dev/null
 

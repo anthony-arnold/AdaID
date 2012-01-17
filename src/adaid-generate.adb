@@ -6,13 +6,38 @@
 
 with SHA.Process_Data;  -- For From_Name
 with Ada.Numerics.Discrete_Random; -- For RNG
+with Ada.Streams.Stream_IO; -- For reading from /dev/random
+use Ada.Streams.Stream_IO;
 
 package body AdaID.Generate is
 
 	-- For RNG
-	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype => Unsigned_32);
+	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype =>
+																Unsigned_32);
 	generator: RNG.Generator;
 	generator_is_set: Boolean := false;
+	
+	
+	procedure Seed_RNG is
+		seed : Integer;
+   		file : File_Type;
+	begin
+		-- Set up the generator first time
+		if not generator_is_set then
+			begin
+				Open   (File => file,
+	   					Mode => In_File,
+               			Name => "/dev/urandom");
+				Integer'Read (Stream(file), seed);
+				Close(file);
+				RNG.Reset(generator, seed);
+			exception
+				when others =>
+					RNG.Reset(generator); -- Fallback to time-based
+			end;
+			generator_is_set := true;
+		end if;
+	end Seed_RNG;
 	
 
 	--Reset a UUID to Nil
@@ -27,11 +52,8 @@ package body AdaID.Generate is
 		rand : Unsigned_32;
 		x : Integer := 0;
 	begin
-		-- Set up the generator first time
-		if not generator_is_set then
-			RNG.Reset(generator);
-			generator_is_set := true;
-		end if;
+		-- Ensure RNG is seeded
+		Seed_RNG;
 		
 		-- Get a random number
 		rand := RNG.Random(generator);
