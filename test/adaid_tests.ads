@@ -23,9 +23,13 @@ private
 	procedure GetVariant(T : in out Test_Case'Class);
 	procedure Equals(T : in out Test_Case'Class);
 	procedure GetHashCode(T : in out Test_Case'Class);
-	procedure Random(T : in out Test_Case'Class);
-	procedure FromName(T : in out Test_Case'Class);
+	procedure RandomNotNil(T : in out Test_Case'Class);
+	procedure RandomUnique(T : in out Test_Case'Class);
+	procedure FromNameNotNil(T : in out Test_Case'Class);
+	procedure FromNameUnique(T : in out Test_Case'Class);
+	procedure FromNameEqual(T : in out Test_Case'Class);
 	procedure ToString(T : in out Test_Case'Class);
-	procedure FromString(T : in out Test_Case'Class);
-	--procedure FromBadString(T : in out Test_Case'Class);
+	procedure FromStringNil(T : in out Test_Case'Class);
+	procedure FromStringEqual(T : in out Test_Case'Class);
+	procedure FromBadString(T : in out Test_Case'Class);
 end AdaID_Tests;

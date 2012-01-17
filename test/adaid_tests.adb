@@ -20,25 +20,33 @@ package body AdaID_Tests is
 		Register_Routine(T, GetVariant'Access, "Get Variant");
 		Register_Routine(T, Equals'Access, "Check Equality");
 		Register_Routine(T, GetHashCode'Access, "Get Hash Code");
-		Register_Routine(T, Random'Access, "Get Random UUID");
-		Register_Routine(T, FromName'Access, "Get UUID From Name");
+		Register_Routine(T, RandomNotNil'Access, "Random UUID is not Nil");
+		Register_Routine(T, RandomUnique'Access, "Random UUIDs are unique");
+		Register_Routine(T, FromNameNotNil'Access, "UUID from a name is not Nil");
+		Register_Routine(T, FromNameUnique'Access, "UUID from name is unique");
+		Register_Routine(T, FromNameEqual'Access, "UUIDs from same name are equal");
 		Register_Routine(T, ToString'Access, "Convert to String");
-		Register_Routine(T, FromString'Access, "Restore From String");
-		--Register_Routine(T, FromBadString'Access, "Expecting Invalid_String");
+		Register_Routine(T, FromStringNil'Access, "UUID from Nil String is Nil");
+		Register_Routine(T, FromStringEqual'Access, "Make same UUID from common formats");
+		Register_Routine(T, FromBadString'Access, "Expecting Invalid_String");
 	end Register_Tests;
-		-- Register the test name
+	
+	-- Register the test name
 	function Name (T : UUID_Test) return String_Access is
 	begin
 		return new String'("AdaID Tests");
 	end Name;
 
-	-- Test routines
+	-- =================== Test routines ===================== --
+	
+	-- Test that a UUID is Nil on initialize
 	procedure Initialization(T : in out Test_Case'Class) is
 		id : UUID;
 	begin
 		Assert(Is_Nil(id), "UUID not initialized to nil");
 	end Initialization;
 
+	-- Test that Set_Nil sets a UUID to Nil
 	procedure SetNil(T : in out Test_Case'Class) is
 		id : UUID;
 	begin
@@ -46,24 +54,29 @@ package body AdaID_Tests is
 		Assert(Is_Nil(id), "UUID not set to nil");
 	end SetNil;
 
+	-- Test that Get_Version returns the correct version
 	procedure GetVersion(T : in out Test_Case'Class) is
 		id : UUID;
 	begin
 		Assert(Get_Version(id) = Unknown, "Wrong version returned");
 	end GetVersion;
 
+	-- Test that Get_Variant returns the correct variant
 	procedure GetVariant(T : in out Test_Case'Class) is
 		id : UUID;
 	begin
 		Assert(Get_Variant(id) = NCS, "Wrong variant returned");
 	end GetVariant;
 
+	-- Test the equals operator
 	procedure Equals(T : in out Test_Case'Class) is
 		id1, id2 : UUID;
 	begin
 		Assert(id1 = id2, "UUIDs not considered equal");
 	end Equals;
 
+	-- Test the Get_Hash_Value function, and ensure that
+	--  two equal UUIDs have the same Hash code.
 	procedure GetHashCode(T : in out Test_Case'Class) is
 		id1, id2 : UUID;
 	begin
@@ -71,23 +84,77 @@ package body AdaID_Tests is
 			"Equal IDs don't have equal hash codes");
 	end GetHashCode;
 
-	procedure Random(T : in out Test_Case'Class) is
+	-- Ensure the Random generator does not make Nil
+	procedure RandomNotNil(T : in out Test_Case'Class) is
+		id : UUID;
+	begin
+		Random(id);
+		Assert(not Is_Nil(id), "Random UUID is Nil");
+	end RandomNotNil;
+	
+	-- Ensure the random generator makes unique IDs
+	procedure RandomUnique(T : in out Test_Case'Class) is 
 		id1, id2 : UUID;
 	begin
 		Random(id1);
-		Assert(not Is_Nil(id1), "Random UUID turned out Nil");
 		Random(id2);
-		Assert(id1 /= id2, "Two subsequent random UUIDs are equal");
-	end Random;
-
-	procedure FromName(T : in out Test_Case'Class) is
+		Assert(id1 /= id2, "Two UUIDs are not unique");
+	end RandomUnique;
+	
+	-- Ensure the name-based generator does not make Nils
+	procedure FromNameNotNil(T : in out Test_Case'Class) is
 		id1, id2 : UUID;
 	begin
 		Random(id1);
 		From_Name(id1, "Test_String", id2);
 		Assert(not Is_Nil(id2), "UUID from name turned out Nil");
+	end FromNameNotNil;
+	
+	procedure FromNameUnique(T : in out Test_Case'Class) is
+		id1, id2 : UUID;
+	begin
+		Random(id1);
+		From_Name(id1, "Test_String", id2);
 		Assert(id1 /= id2, "UUIDs are not unique");
-	end FromName;
+	end FromNameUnique;
+	
+	procedure FromNameEqual(T : in out Test_Case'Class) is
+		id1, id2, id3 : UUID;
+	begin
+		Random(id1);
+		From_Name(id1, "Test_String", id2);
+		Assert(not Is_Nil(id2), "UUID from name turned out Nil");
+		Assert(id1 /= id2, "UUIDs are not unique");
+		
+		From_Name(id1, "Test_String", id3);
+		Assert(id2 = id3, "Equal named UUIDs not Equal");
+	end FromNameEqual;
+	
+	procedure FromStringNil(T : in out Test_Case'Class) is
+		id : UUID;
+		s : constant String := "00000000-0000-0000-0000-000000000000";
+	begin
+		From_String(s, id);
+		Assert(Is_Nil(id), "Wrong UUID from Nil string");
+	end FromStringNil;
+	
+	procedure FromStringEqual(T : in out Test_Case'Class) is
+		id1, id2 : UUID;
+		w : constant String := "12345678-90AB-CDEF-1234-567890ABCDEF";
+		x : constant String := "{12345678-90AB-CDEF-1234-567890ABCDEF}";
+		y : constant String := "{1234567890ABCDEF1234567890ABCDEF}";
+		z : constant String := "1234567890ABCDEF1234567890ABCDEF";
+	begin
+		From_String(w, id1);
+		From_String(x, id2);
+		Assert(id1 = id2, "Equal UUID strings generated distinct UUIDs");
+		From_String(y, id2);
+		Assert(id1 = id2, "Equal UUID strings generated distinct UUIDs");
+		From_String(z, id2);
+		Assert(id1 = id2, "Equal UUID strings generated distinct UUIDs");
+	end FromStringEqual;
+
+
 
 	procedure ToString(T : in out Test_Case'Class) is
 		id : UUID;
@@ -96,39 +163,16 @@ package body AdaID_Tests is
 		Assert(s = "00000000-0000-0000-0000-000000000000", "Incorrect UUID String");
 	end ToString;
 
-	procedure FromString(T : in out Test_Case'Class) is
-		id1, id2 : UUID;
-		w : constant String := "00000000-0000-0000-0000-000000000000";
-		x : constant String := "{00000000-0000-0000-0000-000000000000}";
-		y : constant String := "{00000000000000000000000000000000}";
-		z : constant String := "00000000000000000000000000000000";
+	procedure FromBadString(T : in out Test_Case'Class) is
+		id : UUID;
+		s : constant String := "not-a-uuid";
 	begin
-		From_String(w, id1);
-		Assert(Is_Nil(id1), "Wrong UUID from Nil string");
-		From_String(x, id1);
-		Assert(Is_Nil(id1), "Wrong UUID from Nil string");
-		From_String(y, id1);
-		Assert(Is_Nil(id1), "Wrong UUID from Nil string");
-		From_String(z, id1);
-		Assert(Is_Nil(id1), "Wrong UUID from Nil string");
+		From_String(s, id);
+		Assert(false, "Should have raised Invalid_String");
+		exception
+			when Invalid_String => null;
+	end FromBadString;
 
-		Random(id2);
-		From_String(To_String(id2), id1);
-		Assert(id1 = id2, "Wrong UUID from random string");
-	end FromString;
-
-	--procedure FromBadString(T : in out Test_Case'Class) is
-	--	id : UUID;
-	--	s : constant String := "not-a-uuid";
-	--begin
-	--	begin
-	--		From_String(s, id);
-	--		Fail("Invalid_String expected");
-	--	exception
-	--		when Invalid_String =>
-	--			null; -- expected
-	--	end;
-	--end FromBadString;
 
 end AdaID_Tests;
 

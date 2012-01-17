@@ -1,5 +1,6 @@
 *.o
 *.ali
 *.a
-testuuid
+*.so
+*.so.*
 *~
