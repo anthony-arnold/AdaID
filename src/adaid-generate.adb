@@ -10,7 +10,7 @@ with Ada.Numerics.Discrete_Random; -- For RNG
 package body AdaID.Generate is
 
 	-- For RNG
-	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype => Unsigned_64);
+	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype => Unsigned_32);
 	generator: RNG.Generator;
 	generator_is_set: Boolean := false;
 	
@@ -24,7 +24,7 @@ package body AdaID.Generate is
 	
 	-- Generate a random UUID
 	procedure Random(id : in out UUID) is
-		rand : Unsigned_64;
+		rand : Unsigned_32;
 		x : Integer := 0;
 	begin
 		-- Set up the generator first time
@@ -100,12 +100,14 @@ package body AdaID.Generate is
 		
 		-- expect dashes if str is 36 or 38 in length
 		dashed: constant Boolean := str'Length = 36 or str'Length = 38;
+		
+		-- check to see if braces surround the string
 		braced: constant Boolean := str(str'First) = open and 
 									str(str'Last) = close;
 		
+		-- track where to read from/write to
 		idx : Integer := 0;
 		start, rel : Integer;
-		
 	begin
 		
 		-- Check that length is valid

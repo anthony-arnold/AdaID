@@ -57,7 +57,7 @@ package AdaID is
 	function "="(Left, Right: in UUID) return Boolean;
 	
 	--Get the hash value for the UUID
-	function Get_Hash_Value(This: in UUID) return SizeType;
+	function Get_Hash_Value(This: in UUID) return HashType;
 	
 	--Convert the UUID to a string
 	function To_String(This: in UUID) return String;

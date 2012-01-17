@@ -69,7 +69,7 @@ package body AdaID is
 	
 	
 	--Get the hash value for the UUID
-	function Get_Hash_Value(This: in UUID) return SizeType is
+	function Get_Hash_Value(This: in UUID) return HashType is
 		seed : SizeType := 0;
 	begin
 		-- Hashing (in case it's needed)
