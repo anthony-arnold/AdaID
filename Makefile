@@ -1,8 +1,8 @@
-VERSION=1.0
+VERSION=1.0.1
 LIB=./lib/libadaid.so
 DEBUG=./lib/libadaid.a
 TEST=./bin/test
-DIST=adaid_$(VERSION).orig.tgz
+DIST=adaid_$(VERSION).tgz
 DIST_NAME=adaid-$(VERSION)
 GNAT=gnat
 RM=rm
