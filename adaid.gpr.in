@@ -12,7 +12,6 @@ library project AdaID is
 		for Default_Switches("Ada") use ("-O2",
 										"-Wall",
 										"-Wextra", 
-										"-gnat12", 
 										"-gnatQ");
 	end Builder;
 	package Compiler is
@@ -20,7 +19,6 @@ library project AdaID is
 										"-Wall",
 										"--pedantic-errors",
 										"-Wextra", 
-										"-gnat12", 
 										"-I./include");
 	end Compiler;
 	

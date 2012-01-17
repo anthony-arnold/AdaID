@@ -1,18 +1,26 @@
 #AdaID#
 
-**AdaID** is a simple Ada library for generating [UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier). Supported operations include:
+**What is it?**
+*AdaID* is a simple Ada library for generating [UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier). Supported operations include:
 
  - Generating random UUIDs
  - Generating name-based UUIDs
- - Restoring UUIDs from a string representation (Not yet implemented).
+ - Restoring UUIDs from a string representation.
  - Converting a UUID to a string
+ 
+**What are the dependencies?**
+There are a couple of tools that you'll need to build and install *AdaID*. Firstly, you should have [make](http://www.gnu.org/s/make/) installed, like every good programmer. Secondly, it's assumed that you're using [GNAT](http://www.gnu.org/software/gnat/), or you at least have a recent version available. If you don't have GNAT available, you will need to make your own build scripts (nudge, wink to contributers).
 
-Included is [Jonh Halleck's NIST-validated implementation of SHA1](http://home.utah.edu/~nahaj/ada/sha/) (distrubted under the GNU GPLv3).
+If you want to run the unit test suite, you'll need [AUnit](http://libre.adacore.com/libre/tools/aunit/) installed. If you don't have it, and you don't care about running the tests (and you *should*), then just avoid running `make test`. 
 
-To use the library, ensure that the latest version of [GNAT](http://www.gnu.org/software/gnat/) is installed. Then run `make`, followed by an optional `make test`. Then, use the `src/adaid.ads` file and link your project with `libadaid.a`.
 
+**How do I build it?**
+To build the library: run `make`, optionally followed by `make test`, and finally `make install`. The library should now be installed on your system.
+
+**OK, how is it used?**
 Here's an example usage:
 
+	-- file: print_random_uuid.adb
 	with AdaID; use AdaID;
 	with Ada.Text_IO; use Ada.Text_IO;
     procedure Print_Random_UUID is
@@ -21,10 +29,22 @@ Here's an example usage:
     	Random(id);
     	Put_Line(To_String(id));
     end Print_Random_UUID;
+    
+To compile, create a [gnat project file](http://www.adacore.com/wp-content/files/auto_update/gnat-unw-docs/html/gnat_ugn_12.html) to build the example:
 
+	with "adaid.gpr";
+	project Print_Random_UUID is
+		for Main use ("print_random_uuid.adb");
+		for Languages use ("Ada");
+	end Print_Random_UUID;
+
+And build:
+
+	gnatmake -Pprint_random_uuid.gpr
+
+**What's next?**
 Future improvements include:
 
- - Moving the test program to a proper unit test framework
- - Including an install option in the build process
  - General make file improvements
+ - Library documentation
 

@@ -10,15 +10,13 @@ library project AdaID_Debug is
 		for Default_Switches("Ada") use ("-g",
 										"-Wall",
 										"-Wextra", 
-										"-gnat12", 
 										"-gnatQ");
 	end Builder;
 	package Compiler is
 		for Default_Switches("Ada") use ("-g",
 										"-Wall",
 										"--pedantic-errors",
-										"-Wextra", 
-										"-gnat12", 
+										"-Wextra",
 										"-I./include");
 	end Compiler;
 	
