@@ -11,7 +11,7 @@ MKDIR=mkdir -p
 CP=cp
 
 
-.PHONY: debug test install installclean clean cleanall all support remove dist
+.PHONY: debug test install installclean clean cleanall all support remove dist docs
 
 #library
 $(LIB): src/*.adb src/*.ads include/*.ads adaid.gpr
@@ -93,6 +93,11 @@ $(DIST): cleanall
 				--xform 's!$(THIS)!$(DIST_NAME)!'\
 				$(THIS)
 
+#documentation
+docs: include/*.ads
+	ls include/*.ads | adabrowse -i -o ./ -f-
+	@mv *.html doc
+
 #misc
 all: $(LIB) $(TEST)
 
@@ -100,5 +105,5 @@ clean:
 	$(RM) -f obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
 	
 cleanall: clean
-	$(RM) -f support/*.gpr bin/* lib/* adaid.gpr  2> /dev/null
+	$(RM) -f support/*.gpr bin/* lib/* adaid.gpr doc/*.html  2> /dev/null
 

@@ -1,26 +1,29 @@
+-------------------------------------------------------------------------------
 -- File: adaid.ads
 -- Description: A UUID type for Ada
 -- Author: Anthony Arnold
 -- License: http://www.gnu.org/licenses/gpl.txt
+-------------------------------------------------------------------------------
 
 with Ada.Finalization;
 with Interfaces; use Interfaces; -- for Unsigned_n
+
+-- AdaID defines the types and accessor/miscellaneous functions for 
+-- the UUID type.
 package AdaID is
 
-	-- Size type is unsigned 
-	subtype SizeType is Unsigned_32;
-	uuid_size: constant Integer := 16; -- This many bytes in a UUID
+	uuid_size: constant Integer := 16;
+	-- This many bytes in a UUID
 	
-	--Hash Type
-	subtype HashType is SizeType; -- The 'hash' of a UUID
+	subtype HashType is Unsigned_32; 
+	-- Represents a "Hash Code" of a UUID
 	
+	type Byte is mod 2 ** 8;
 	-- Byte Type (2^8)
-	type Byte is mod 2 ** 8; -- 8-bit bytes
 
-	-- Byte Array for UUID data storage
 	type ByteArray is array (0 .. uuid_size-1) of Byte; 
+	-- Byte Array for UUID data storage
 	
-	-- Some UUID Enums
 	type VersionType is (
 		Unknown,
 		Time_Based,
@@ -29,6 +32,7 @@ package AdaID is
 		Random_Number_Based,
 		Name_Based_SHA1
 	);
+	-- The Version of the UUID
 	
 	type VariantType is (
 		NCS,
@@ -36,33 +40,34 @@ package AdaID is
 		Microsoft,
 		Future
 	);
-	
+	-- The UUID Variant
 
-	-- The main type for the package
+
 	type UUID is new Ada.Finalization.Controlled with 
 	record
 		data: ByteArray;
 	end record;
+	-- The main type for the package
 	
-	--Determine if UUID is NIL
 	function Is_Nil(This: in UUID) return Boolean;
+	--Determine if UUID is NIL (All Zeros)
 	
-	--Get the UUID Version
 	function Get_Version(This: in UUID) return VersionType;
+	--Get the UUID Version
 	
-	--Get the UUID Variant
 	function Get_Variant(This: in UUID) return VariantType;
+	--Get the UUID Variant
 	
-	--Test for equality
 	function "="(Left, Right: in UUID) return Boolean;
+	--Test for equality between Left and Right
 	
-	--Get the hash value for the UUID
 	function Get_Hash_Value(This: in UUID) return HashType;
+	--Get the hash code for the UUID
 	
-	--Convert the UUID to a string
 	function To_String(This: in UUID) return String;
+	--Convert the UUID to a common string representation
 	
 private
-	--Default "constructor", initializes to NIL
 	overriding procedure Initialize (This: in out UUID);
+	--Default "constructor", initializes to NIL
 end AdaID;
