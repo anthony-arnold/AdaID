@@ -1,4 +1,4 @@
-VERSION=1.0.1
+VERSION=1.0.2
 LIB=./lib/libadaid.so
 DEBUG=./lib/libadaid.a
 TEST=./bin/test
