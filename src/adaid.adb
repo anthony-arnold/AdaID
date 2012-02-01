@@ -70,13 +70,13 @@ package body AdaID is
 	
 	--Get the hash value for the UUID
 	function Get_Hash_Value(This: in UUID) return HashType is
-		seed : SizeType := 0;
+		seed : HashType := 0;
 	begin
 		-- Hashing (in case it's needed)
 		for i in ByteArray'Range loop
 			seed := seed xor
 					(
-						SizeType(This.data(i)) 
+						HashType(This.data(i)) 
 						+ 16#9E3779B9#
 						+ shift_left(seed, 6)
 						+ shift_right(seed, 2)
