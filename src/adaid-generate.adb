@@ -12,8 +12,8 @@ use Ada.Streams.Stream_IO;
 package body AdaID.Generate is
 
 	-- For RNG
-	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype =>
-																Unsigned_32);
+	package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype => 
+                                                        Unsigned_32);
 	generator: RNG.Generator;
 	generator_is_set: Boolean := false;
 	
