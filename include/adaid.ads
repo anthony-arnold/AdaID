@@ -2,7 +2,7 @@
 -- File: adaid.ads
 -- Description: A UUID type for Ada
 -- Author: Anthony Arnold
--- License: http://www.gnu.org/licenses/gpl.txt
+-- License: Simplified BSD License (see LICENSE)
 -------------------------------------------------------------------------------
 
 with Ada.Finalization;

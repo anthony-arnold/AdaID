@@ -1,8 +1,7 @@
 -- File: adaid-generate.adb
 -- Description: UUID Generation
 -- Author: Anthony Arnold
--- License: http://www.gnu.org/licenses/gpl.txt
-
+-- License: Simplified BSD License (see LICENSE)
 
 with SHA.Process_Data;  -- For From_Name
 with Ada.Numerics.Discrete_Random; -- For RNG

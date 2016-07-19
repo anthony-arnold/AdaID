@@ -1,7 +1,7 @@
 -- File: adaid.adb
 -- Description: A UUID type for Ada
 -- Author: Anthony Arnold
--- License: http://www.gnu.org/licenses/gpl.txt
+-- License: Simplified BSD License (see LICENSE)
 
 package body AdaID is
    -- Default "Constructor" for NIL UUID

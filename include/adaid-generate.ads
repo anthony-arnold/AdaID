@@ -2,7 +2,7 @@
 -- File: adaid-generate.ads
 -- Description: UUID Generation
 -- Author: Anthony Arnold
--- License: http://www.gnu.org/licenses/gpl.txt
+-- License: Simplified BSD License (see LICENSE)
 -------------------------------------------------------------------------------
 
 -- AdaID.Generate defines the functions required to generate UUIDs using
