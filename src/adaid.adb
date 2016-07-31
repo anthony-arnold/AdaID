@@ -88,7 +88,7 @@ package body AdaID is
       result : String(1 .. 36);
       index : Integer := 1;
       base : constant Integer := 2 ** 4;
-      chars : constant String(1 .. base) := "0123456789ABCDEF";
+      chars : constant String(1 .. base) := "0123456789abcdef";
       b : Integer;
    begin
       for i in ByteArray'Range loop
