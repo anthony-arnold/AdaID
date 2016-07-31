@@ -25,8 +25,8 @@ package body AdaID is
 
    --Get the UUID Version
    function Get_Version(This: in UUID) return VersionType is
-      -- version type in octect 9
-      b : constant Byte := This.data(6) and Byte(16#0F#);
+      -- version type in octet 7
+      b : constant Byte := This.data(6) and Byte(16#F0#);
    begin
       case b is
          when 16#10# => return Time_Based;
@@ -40,7 +40,7 @@ package body AdaID is
 
    --Get the UUID Variant
    function Get_Variant(This: in UUID) return VariantType is
-      -- variant type in octet 7
+      -- variant type in octet 9
       b : constant Byte := This.data(8);
    begin
       if (b and 16#80#) = 0 then
@@ -88,7 +88,7 @@ package body AdaID is
       result : String(1 .. 36);
       index : Integer := 1;
       base : constant Integer := 2 ** 4;
-      chars : constant String(1 .. base) := "0123456789ABCDEF";
+      chars : constant String(1 .. base) := "0123456789abcdef";
       b : Integer;
    begin
       for i in ByteArray'Range loop
