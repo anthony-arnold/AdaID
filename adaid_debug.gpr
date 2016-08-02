@@ -12,7 +12,7 @@ library project AdaID_Debug is
    end Builder;
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnatyabBCeiklmnpxAfh");
+      for Default_Switches ("ada") use ("-gnatyabBCeiklmnpxAfht");
    end Compiler;
 
    package Linker is
