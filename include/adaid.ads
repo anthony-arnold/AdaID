@@ -12,7 +12,7 @@ with Interfaces; use Interfaces; -- for Unsigned_n
 -- the UUID type.
 package AdaID is
 
-   uuid_size: constant Integer := 16;
+   uuid_size : constant Integer := 16;
    -- This many bytes in a UUID
 
    subtype HashType is Unsigned_32;
@@ -21,7 +21,7 @@ package AdaID is
    type Byte is mod 2 ** 8;
    -- Byte Type (2^8)
 
-   type ByteArray is array (0 .. uuid_size-1) of Byte;
+   type ByteArray is array (0 .. uuid_size - 1) of Byte;
    -- Byte Array for UUID data storage
 
    type VersionType is (
@@ -45,29 +45,29 @@ package AdaID is
 
    type UUID is new Ada.Finalization.Controlled with
       record
-         data: ByteArray;
+         data : ByteArray;
       end record;
    -- The main type for the package
 
-   function Is_Nil(This: in UUID) return Boolean;
-   --Determine if UUID is NIL (All Zeros)
+   function Is_Nil (This : in UUID) return Boolean;
+   -- Determine if UUID is NIL (All Zeros)
 
-   function Get_Version(This: in UUID) return VersionType;
-   --Get the UUID Version
+   function Get_Version (This : in UUID) return VersionType;
+   -- Get the UUID Version
 
-   function Get_Variant(This: in UUID) return VariantType;
-   --Get the UUID Variant
+   function Get_Variant (This : in UUID) return VariantType;
+   -- Get the UUID Variant
 
-   function "="(Left, Right: in UUID) return Boolean;
-   --Test for equality between Left and Right
+   function "="(Left, Right : in UUID) return Boolean;
+   -- Test for equality between Left and Right
 
-   function Get_Hash_Value(This: in UUID) return HashType;
-   --Get the hash code for the UUID
+   function Get_Hash_Value (This : in UUID) return HashType;
+   -- Get the hash code for the UUID
 
-   function To_String(This: in UUID) return String;
-   --Convert the UUID to a common string representation
+   function To_String (This : in UUID) return String;
+   -- Convert the UUID to a common string representation
 
 private
-   overriding procedure Initialize (This: in out UUID);
-   --Default "constructor", initializes to NIL
+   overriding procedure Initialize (This : in out UUID);
+   -- Default "constructor", initializes to NIL
 end AdaID;

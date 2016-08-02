@@ -168,7 +168,8 @@ package body SHA.Process_Data is
       --  We may have to make room for the count to be put on the last block.
       if Given.Next_Word >= Given.Data'Last - 1 then -- Room for the count?
          if not (Given.Next_Word = Given.Data'Last - 1
-                 and Given.Remaining_Bits = 32) then
+                 and then Given.Remaining_Bits = 32)
+         then
             Transform (Given);
          end if;
       end if;
