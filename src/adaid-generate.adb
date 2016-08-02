@@ -14,7 +14,7 @@ package body AdaID.Generate is
    package RNG is new Ada.Numerics.Discrete_Random(Result_Subtype =>
                                                      Unsigned_32);
    generator: RNG.Generator;
-   generator_is_set: Boolean := false;
+   generator_is_set: Boolean := False;
 
 
    procedure Seed_RNG is
@@ -34,12 +34,12 @@ package body AdaID.Generate is
             when others =>
                RNG.Reset(generator); -- Fallback to time-based
          end;
-         generator_is_set := true;
+         generator_is_set := True;
       end if;
    end Seed_RNG;
 
 
-   --Reset a UUID to Nil
+   -- Reset a UUID to Nil
    procedure Nil(id : in out UUID) is
    begin
       Initialize(id);
@@ -69,12 +69,12 @@ package body AdaID.Generate is
       -- Set the variant
       id.data(8) := (id.data(8) and 16#BF#) or 16#80#;
 
-      --Set the version to random-number-based
+      -- Set the version to random-number-based
       id.data(6) := (id.data(6) and 16#4F#) or 16#40#;
-   end;
+   end Random;
 
 
-   --Generate a UUID based on a name
+   -- Generate a UUID based on a name
    procedure From_Name(namespace: in UUID; name: in String; id: in out UUID) is
       use SHA.Process_Data;
 
@@ -93,7 +93,7 @@ package body AdaID.Generate is
          Add(SHA.Process_Data.Byte(Character'Pos(name(i))), c);
       end loop;
 
-      --Get the digest
+      -- Get the digest
       Finalize(d, c);
 
       -- Now make the UUID from the hash
@@ -107,7 +107,7 @@ package body AdaID.Generate is
       -- set variant
       id.data(8) := (id.data(8) and 16#BF#) or 16#80#;
 
-      --set version
+      -- set version
       id.data(6) := (id.data(6) and 16#5F#) or 16#50#;
    end From_Name;
 
@@ -120,10 +120,10 @@ package body AdaID.Generate is
       close : constant Character := '}';
 
       -- expect dashes if str is 36 or 38 in length
-      dashed: constant Boolean := str'Length = 36 or str'Length = 38;
+      dashed: constant Boolean := str'Length = 36 or else str'Length = 38;
 
       -- check to see if braces surround the string
-      braced: constant Boolean := str(str'First) = open and
+      braced: constant Boolean := str(str'First) = open and then
         str(str'Last) = close;
 
       -- track where to read from/write to
@@ -132,14 +132,15 @@ package body AdaID.Generate is
    begin
 
       -- Check that length is valid
-      if not dashed and str'Length /= 32 and str'Length /= 34 then
+      if not dashed and then str'Length /= 32 and then str'Length /= 34 then
          raise Invalid_String;
       end if;
 
       -- Check that brace are valid
       start := str'First;
-      if not braced and
-        (str(str'First) = open or str(str'Last) = close) then
+      if not braced and then
+        (str(str'First) = open or else str(str'Last) = close)
+      then
          raise Invalid_String; -- only one brace present
       elsif braced then
          start := str'First + 1;
@@ -150,7 +151,9 @@ package body AdaID.Generate is
       -- Grab each pair and stuff into byte
       for i in ByteArray'Range loop
          rel := idx - start;
-         if dashed and (rel = 8 or rel = 13 or rel = 18 or rel = 23) then
+         if dashed and then
+           (rel = 8 or else rel = 13 or else rel = 18 or else rel = 23)
+         then
             if str(idx) /= delim then
                raise Invalid_String; -- expected '-'
             end if;

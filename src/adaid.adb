@@ -10,20 +10,20 @@ package body AdaID is
       for i in ByteArray'Range loop
          This.data(i) := 0;
       end loop;
-   end;
+   end Initialize;
 
    -- Determine if the UUID is NIL
    function Is_Nil(This: in UUID) return Boolean is
    begin
       for i in ByteArray'Range loop
          if This.data(i) /= 0 then
-            return false;
+            return False;
          end if;
       end loop;
-      return true;
+      return True;
    end Is_Nil;
 
-   --Get the UUID Version
+   -- Get the UUID Version
    function Get_Version(This: in UUID) return VersionType is
       -- version type in octet 7
       b : constant Byte := This.data(6) and Byte(16#F0#);
@@ -38,7 +38,7 @@ package body AdaID is
       end case;
    end Get_Version;
 
-   --Get the UUID Variant
+   -- Get the UUID Variant
    function Get_Variant(This: in UUID) return VariantType is
       -- variant type in octet 9
       b : constant Byte := This.data(8);
@@ -54,19 +54,19 @@ package body AdaID is
       end if;
    end Get_Variant;
 
-   --Test for equality
+   -- Test for equality
    function "="(Left, Right: in UUID) return Boolean is
    begin
       for i in ByteArray'Range loop
          if Left.data(i) /= Right.data(i) then
-            return false;
+            return False;
          end if;
       end loop;
-      return true;
+      return True;
    end "=";
 
 
-   --Get the hash value for the UUID
+   -- Get the hash value for the UUID
    function Get_Hash_Value(This: in UUID) return HashType is
       seed : HashType := 0;
    begin
@@ -83,7 +83,7 @@ package body AdaID is
       return seed;
    end Get_Hash_Value;
 
-   --Convert the UUID to a string
+   -- Convert the UUID to a string
    function To_String(This: in UUID) return String is
       result : String(1 .. 36);
       index : Integer := 1;
@@ -98,7 +98,7 @@ package body AdaID is
          index := index + 2;
 
          -- insert dashes
-         if i = 3 or i = 5 or i = 7 or i = 9 then
+         if i = 3 or else i = 5 or else i = 7 or else i = 9 then
             result(index) := '-';
             index := index + 1;
          end if;

@@ -50,24 +50,24 @@ package AdaID is
    -- The main type for the package
 
    function Is_Nil(This: in UUID) return Boolean;
-   --Determine if UUID is NIL (All Zeros)
+   -- Determine if UUID is NIL (All Zeros)
 
    function Get_Version(This: in UUID) return VersionType;
-   --Get the UUID Version
+   -- Get the UUID Version
 
    function Get_Variant(This: in UUID) return VariantType;
-   --Get the UUID Variant
+   -- Get the UUID Variant
 
    function "="(Left, Right: in UUID) return Boolean;
-   --Test for equality between Left and Right
+   -- Test for equality between Left and Right
 
    function Get_Hash_Value(This: in UUID) return HashType;
-   --Get the hash code for the UUID
+   -- Get the hash code for the UUID
 
    function To_String(This: in UUID) return String;
-   --Convert the UUID to a common string representation
+   -- Convert the UUID to a common string representation
 
 private
    overriding procedure Initialize (This: in out UUID);
-   --Default "constructor", initializes to NIL
+   -- Default "constructor", initializes to NIL
 end AdaID;
