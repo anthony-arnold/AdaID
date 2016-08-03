@@ -7,19 +7,9 @@ library project AdaID is
 	for Library_Kind use "dynamic";
 	for Library_ALI_Dir use "ali";
 	for Library_Version use "libadaid.so." & Version;
-	
-	package Builder is
-		for Default_Switches("Ada") use ("-O2",
-										"-Wall",
-										"-Wextra", 
-										"-gnatQ");
-	end Builder;
+
 	package Compiler is
-		for Default_Switches("Ada") use ("-O2",
-										"-Wall",
-										"--pedantic-errors",
-										"-Wextra", 
-										"-I./include");
+	   for Default_Switches ("ada") use ("-gnatyabBCeiklmnpxAfht");
 	end Compiler;
-	
+
 end AdaID;

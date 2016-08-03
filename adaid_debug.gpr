@@ -15,8 +15,4 @@ library project AdaID_Debug is
       for Default_Switches ("ada") use ("-gnatyabBCeiklmnpxAfht");
    end Compiler;
 
-   package Linker is
-   end Linker;
-
 end AdaID_Debug;
-
