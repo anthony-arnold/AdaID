@@ -11,8 +11,9 @@ with AdaID_Tests;
 procedure Test is
 	function Suite return Access_Test_Suite is
 		Result : constant Access_Test_Suite := new Test_Suite;
+                Test : constant AdaID_Tests.Access_UUID_Test := new AdaID_Tests.UUID_Test;
 	begin
-		Add_Test(Result, new AdaID_Tests.UUID_Test);
+		Add_Test(Result, Test);
 		return Result;
 	end Suite;
 

@@ -7,6 +7,7 @@ with AUnit.Test_Cases;
 package AdaID_Tests is
 
    type UUID_Test is new AUnit.Test_Cases.Test_Case with null record;
+   type Access_UUID_Test is access UUID_Test;
 
    -- Register the tests to run
    procedure Register_Tests(T : in out UUID_Test);

@@ -93,17 +93,11 @@ $(DIST): cleanall
 				--xform 's!$(THIS)!$(DIST_NAME)!'\
 				$(THIS)
 
-#documentation
-docs: include/*.ads
-	ls include/*.ads | adabrowse -i -o ./ -f-
-	@mv *.html doc
-
 #misc
 all: $(LIB) $(TEST)
 
 clean:
 	$(RM) -f obj/*.* obj/test/*.* obj/debug/*.* ali/*.* ali/debug/*.* 2> /dev/null
-	
+
 cleanall: clean
 	$(RM) -f support/*.gpr bin/* lib/* adaid.gpr doc/*.html  2> /dev/null
-
